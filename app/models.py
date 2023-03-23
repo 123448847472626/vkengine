@@ -1,6 +1,5 @@
 from django.db import models
 from decimal import Decimal, DecimalTuple
-from email.policy import default
 from numbers import Integral
 import random
 from json import dumps
@@ -27,8 +26,8 @@ class Account(models.Model):
         default=False, help_text='Писал(-а) ли в личные сообщение?')
     messages_count = models.BigIntegerField(
         default=0, help_text='Количество сообщений')
-    online_time = models.DateTimeField(
-        default=datetime.now, help_text='Время онлайна')
+    # online_time = models.DateTimeField(
+    #     default=datetime.now, help_text='Время онлайна')
 
     nickname = models.TextField(
         default='', null=True, blank=True, help_text='Никнейм')
@@ -88,10 +87,8 @@ class Account(models.Model):
         await self.TempData.bot(method='messages.send', params=data)
 
     def mention(self):
-        if self.is_mention is True:
-            return f'[id{self.uid}|{self.nickname}]'
-        else:
-            return self.nickname
+        return f'[id{self.uid}|{self.nickname}]'
+        
 
     def admin_mention(self):
         return f'[id{self.uid}|{self.status} ({self.admin_lvl} ур.)]'
